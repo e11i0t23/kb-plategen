@@ -73,6 +73,9 @@ const PlateConfiguration = (props: PlateConfigurationInputProps) => {
               <option className="item" data-value="Keycap_Outline">
                 Keycap Outline
               </option>
+              <option className="item" data-value="Choc">
+                Choc
+              </option>
             </select>
           </div>
           <div className="three wide field">

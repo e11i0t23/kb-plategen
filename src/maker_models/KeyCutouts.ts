@@ -16,7 +16,8 @@ export enum SwitchCutoutType {
   MX_Alps = "MX/Alps",
   MX_Opening = "MX Opening",
   MX_Encoder = "MX + Encoder",
-  Keycap_Outline = "Keycap Outline"
+  Keycap_Outline = "Keycap Outline",
+  Choc = "Choc v1"
 }
 
 class KeyCutouts implements makerjs.IModel {
@@ -130,6 +131,8 @@ class KeyCutouts implements makerjs.IModel {
         return new CenteredRoundRectangle(14, 14, radius);
       case SwitchCutoutType.Alps:
         return new CenteredRoundRectangle(15.5, 12.8, radius);
+      case SwitchCutoutType.Choc:
+        return new CenteredRoundRectangle(13.8, 13.8, radius);
       case SwitchCutoutType.MX_Alps: {
         let cutoutMX = this.switchCutout(SwitchCutoutType.MX, radius);
         let cutoutAlps = this.switchCutout(SwitchCutoutType.Alps, radius);
