@@ -7,30 +7,30 @@ class SwitchPlate implements makerjs.IModel {
   public origin: makerjs.IPoint;
   public units = makerjs.unitType.Millimeter;
   public models: makerjs.IModelMap = {};
+  public keyboard: kle.Keyboard = new kle.Keyboard();
 
   constructor(plateParameters: PlateParameters) {
     this.origin = [0, 0];
     let models: makerjs.IModelMap = {};
     console.log(`Parameters: ${JSON.stringify(plateParameters)}`);
 
-    var keyboard: kle.Keyboard;
     if (typeof plateParameters.kleData === "string") {
-      keyboard = kle.parse(plateParameters.kleData);
+      this.keyboard = kle.parse(plateParameters.kleData);
     } else if (typeof plateParameters.kleData === "object") {
-      keyboard = kle.deserialize(plateParameters.kleData);
+      this.keyboard = kle.deserialize(plateParameters.kleData);
     } else {
       return;
     }
 
     let i = 1;
-    for (let key of keyboard.keys) {
+    for (let key of this.keyboard.keys) {
       models["switch" + i] = new KeyCutouts(key, plateParameters);
       i++;
     }
-
+  
     if (plateParameters.combineOverlaps) {
       let combinedModel = makerjs.cloneObject(models["switch1"]);
-      for (let i = 2; i <= keyboard.keys.length; i++) {
+      for (let i = 2; i <= this.keyboard.keys.length; i++) {
         console.log(`Combining models: Switch ${i}`);
         combinedModel = makerjs.model.combineUnion(
           combinedModel,

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import SwitchPlate from './maker_models/SwitchPlate';
 import PlateViewer from './components/PlateViewer';
+import PcbViewer from './components/PcbViewer';
 import { SwitchCutoutType } from './maker_models/KeyCutouts';
 import { StabilizerCutoutType } from './maker_models/StabilizerCutout';
 import { AcousticCutoutType } from './maker_models/AcousticCutout';
@@ -10,7 +11,7 @@ import PlateParameters from './PlateParameters';
 import AppInfo from './components/AppInfo';
 import useConstant from 'use-constant';
 
-let kleData = JSON.stringify(require('./sample/quefrency-rev2.json'));
+let kleData = JSON.stringify(require('./sample/iso60.json'));
 kleData = kleData.substring(1, kleData.length - 1);
 
 const defaultConfig: PlateConfigurationProps = {
@@ -24,6 +25,8 @@ const defaultConfig: PlateConfigurationProps = {
   horizontalKeySpacing: 19.05,
   verticalKeySpacing: 19.05,
   combineOverlaps: false,
+  Hotswap: false,
+  RGB: false
 };
 const initialSwitchPlate = new SwitchPlate(defaultConfig);
 
@@ -46,6 +49,7 @@ function App() {
   return (
     <>
       <PlateViewer switchPlate={switchPlate} />
+      <PcbViewer switchPlate={switchPlate} plateParameters={config} />
       <div>
         <PlateConfiguration {...config} onConfigChange={handleConfigurationChange} />
         &nbsp;

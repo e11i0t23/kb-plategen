@@ -21,6 +21,8 @@ const PlateConfiguration = (props: PlateConfigurationInputProps) => {
     switchCutoutRadius,
     switchCutoutType,
     verticalKeySpacing,
+    RGB,
+    Hotswap
   } = props;
   const handleKLEChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     onConfigChange({ ...props, kleData: event.target.value });
@@ -220,6 +222,40 @@ const PlateConfiguration = (props: PlateConfigurationInputProps) => {
             <label>
               Combine Overlapping Layouts (Note: This makes rendering slow, so use this when you're
               done tinkering with other settings to generate your final plate design)
+            </label>
+          </div>
+        </div>
+        <h3 className="ui dividing header">
+          <i className="settings icon" />
+          Hotswap
+        </h3>
+        <div className="field">
+          <div className="ui checkbox">
+            <input
+              type="checkbox"
+              name="Hotswap"
+              checked={Hotswap}
+              onChange={handleChange}
+            />
+            <label>
+              Enable Hotswap
+            </label>
+          </div>
+        </div>
+        <h3 className="ui dividing header">
+          <i className="settings icon" />
+          RGB
+        </h3>
+        <div className="field">
+          <div className="ui checkbox">
+            <input
+              type="checkbox"
+              name="RGB"
+              checked={RGB}
+              onChange={handleChange}
+            />
+            <label>
+               Enable RGB
             </label>
           </div>
         </div>

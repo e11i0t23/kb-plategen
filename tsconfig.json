@@ -15,7 +15,8 @@
     "noEmit": true,
     "jsx": "react",
     "typeRoots": ["./node_modules/@types"],
-    "types": ["makerjs", "jest"]
+    "types": ["makerjs", "jest"],
+    "downlevelIteration": true
   },
   "include": ["src"]
 }

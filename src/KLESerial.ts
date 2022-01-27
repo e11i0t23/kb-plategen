@@ -1,6 +1,8 @@
 import json5 from "json5";
+import {scale, rotate, translate, compose, applyToPoint} from 'transformation-matrix';
 
 export class Key {
+  id: number = 0;
   color: string = "#cccccc";
   labels: string[] = [];
   textColor: Array<string | undefined> = [];
@@ -30,6 +32,10 @@ export class Key {
   st: string = ""; // switch type
   rs: boolean = false; // reversed stabilizer
   enc: boolean = false; // encoder
+  col: number = 0;
+  row: number = 0;
+  pcb_x: number = 0;
+  pcb_y: number = 0;
 }
 
 export class KeyboardMetadata {
@@ -138,16 +144,23 @@ export function deserialize(rows: Array<any>): Keyboard {
             }
           }
 
+          //handle pcb x/y cordinates for rotation
+
+          [newKey.pcb_x, newKey.pcb_y] = applyToPoint(rotate(((newKey.rotation_angle)*(Math.PI)/180), newKey.rotation_x, newKey.rotation_y), [newKey.x, newKey.y])
+
           // Add the key!
           kbd.keys.push(newKey);
 
           // Set up for the next key
+          current.id++
           current.x += current.width;
           current.width = current.height = 1;
           current.x2 = current.y2 = current.width2 = current.height2 = 0;
           current.nub = current.stepped = current.decal = false;
           current.rs = false;
           current.enc = false;
+          current.col++
+          if (newKey.width > 1 ) current.col += Math.round(newKey.width/2-1)
         } else {
           if (
             k !== 0 &&
@@ -187,9 +200,15 @@ export function deserialize(rows: Array<any>): Keyboard {
             if (split[0] !== "") current.default.textColor = split[0];
             current.textColor = reorderLabelsIn(split, align);
           }
-          if (item.x) current.x += item.x;
+          if (item.x) {
+            current.x += item.x;
+            if (item.x >= 1 ) current.col += Math.round(item.x)
+          }
           if (item.y) current.y += item.y;
-          if (item.w) current.width = current.width2 = item.w;
+          if (item.w) {
+            current.width = current.width2 = item.w;
+            if (item.w > 1 ) current.col += Math.round(item.w/2-1)
+          }
           if (item.h) current.height = current.height2 = item.h;
           if (item.x2) current.x2 = item.x2;
           if (item.y2) current.y2 = item.y2;
@@ -209,6 +228,8 @@ export function deserialize(rows: Array<any>): Keyboard {
 
       // End of the row
       current.y++;
+      current.row++
+      current.col=0
       current.x = current.rotation_x;
     } else if (typeof rows[r] === "object") {
       if (r !== 0) {

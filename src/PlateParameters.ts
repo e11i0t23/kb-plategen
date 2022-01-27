@@ -1,6 +1,7 @@
 import { SwitchCutoutType } from "./maker_models/KeyCutouts";
 import { StabilizerCutoutType } from "./maker_models/StabilizerCutout";
 import { AcousticCutoutType } from "./maker_models/AcousticCutout";
+import PcbParameters from "./pcb-gen/Switches";
 
 export type PlateKLE = {
   kleData: string;
@@ -18,6 +19,6 @@ export type KeyCutoutParameters = {
   combineOverlaps: boolean;
 };
 
-export type PlateParameters = KeyCutoutParameters & PlateKLE;
+export type PlateParameters = KeyCutoutParameters & PlateKLE & PcbParameters;
 
 export default PlateParameters;
