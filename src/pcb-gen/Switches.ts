@@ -34,7 +34,7 @@ type pcbKey = {
 }
 
 var MX_HOTSWAP: switchFootprint = {
-  footprint: "KEYSWITCH-PLAIN-MXHSPCB-",
+  footprint: "MXHSPCB-",
   smdDiodePos: { x: 8.25, y: 6.65, r:90 },
   mx1: { x: -7.36, y: 2.54},
   mx2: { x:  6.09, y: 5.08},
@@ -42,7 +42,7 @@ var MX_HOTSWAP: switchFootprint = {
 }
 
 var MX: switchFootprint = {
-  footprint: "KEYSWITCH-PLAIN-MX-",
+  footprint: "MX-",
   smdDiodePos: { x: 8.34, y: 5.91, r:90 },
   mx1: { x: -3.81, y: 2.54 },
   mx2: { x:  2.54, y: 5.08 },
@@ -50,7 +50,7 @@ var MX: switchFootprint = {
 }
 
 var DIODE_SOD123: diode = {
-  footprint: "DIODE-SOD-123@Parts",
+  footprint: "D_SOD123@Passives",
   a: { x: -1.635000032 , y: 0},
   c: { x:  1.635000032 , y: 0}
 }

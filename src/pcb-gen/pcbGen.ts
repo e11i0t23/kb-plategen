@@ -41,7 +41,7 @@ export const pcbGen = (p: PlateParameters, s: SwitchPlate) => {
   keys.forEach((k) => {
     
     //schematic control
-    pcbScript.schem.push(`ADD ${ks.switch.footprint+getKeysize(k)}@Keyswitch KEY${k.id} (${k.col} ${-k.row*1.5});\n`);
+    pcbScript.schem.push(`ADD ${ks.switch.footprint+getKeysize(k)}@Keyswitch-Plain KEY${k.id} (${k.col} ${-k.row*1.5});\n`);
     pcbScript.schem.push(`ADD ${ks.diode.footprint} D${k.id} R90 (${k.col+0.1} ${-k.row*1.5+0.6});\n`);
 
 
