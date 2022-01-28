@@ -122,6 +122,8 @@ export function deserialize(rows: Array<any>): Keyboard {
         if (typeof item === "string") {
           let newKey: Key = copy(current);
 
+          newKey.col = Math.floor(newKey.x+newKey.width/2)
+          newKey.row = Math.floor(newKey.y+newKey.height/2)
           // Calculate some generated values
           newKey.width2 = newKey.width2 === 0 ? current.width : current.width2;
           newKey.height2 = newKey.height2 === 0
@@ -160,7 +162,7 @@ export function deserialize(rows: Array<any>): Keyboard {
           current.rs = false;
           current.enc = false;
           current.col++
-          if (newKey.width > 1 ) current.col += Math.round(newKey.width/2-1)
+          if (newKey.width > 1 ) current.col += Math.floor(newKey.width/2-1)
         } else {
           if (
             k !== 0 &&
@@ -202,12 +204,12 @@ export function deserialize(rows: Array<any>): Keyboard {
           }
           if (item.x) {
             current.x += item.x;
-            if (item.x >= 1 ) current.col += Math.round(item.x)
+            if (item.x >= 1 ) current.col += Math.floor(item.x)
           }
           if (item.y) current.y += item.y;
           if (item.w) {
             current.width = current.width2 = item.w;
-            if (item.w > 1 ) current.col += Math.round(item.w/2-1)
+            if (item.w > 1 ) current.col += Math.floor(item.w/2-1)
           }
           if (item.h) current.height = current.height2 = item.h;
           if (item.x2) current.x2 = item.x2;

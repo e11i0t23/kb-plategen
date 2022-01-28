@@ -78,13 +78,9 @@ const PcbViewer = ({ switchPlate, plateParameters }: Props) => {
       return <LineTo  from={`dot-${line.id1}`} to={`dot-${line.id2}`} 
                       within={'pcb-viewer'} 
                       delay={1} 
-                      borderColor={line.row ? 'red' : 'green'}
+                      borderColor={line.row ? 'rgba(255,0,0,0.75)' : 'rgba(0,0,255,0.5)'}
                       borderWidth={line.id1== activeKey || line.id2==activeKey ? 3:1 }/>
     })}
-    <button className="ui primary button" onClick={(e) => pcbGen(plateParameters, switchPlate)}>
-      <i className="download icon" />
-      Download SCHEM
-    </button>
   <div className='row'>
     <h4>Key:</h4>
     <input
@@ -109,6 +105,12 @@ const PcbViewer = ({ switchPlate, plateParameters }: Props) => {
       value={currentCol}
       onChange={(e)=>{handleColChange(e)}}
     />
+  </div>
+  <div className='pcb-download'>  
+    <button className="ui primary button" onClick={(e) => pcbGen(plateParameters, switchPlate)}>
+      <i className="download icon" />
+      Download SCHEM
+    </button>
   </div>
 
 
@@ -138,6 +140,7 @@ function toPoints(kb: kle.Keyboard): points[]{
     var keys = kb.keys.filter(key => {
       return key.row === row
     })
+    keys.sort((a,b) => (a.x > b.x) ? 1 : ((b.x > a.x) ? -1 : 0))
     if (keys.length>1){
       for (let i = 0; i < keys.length-1; i++) {
         let keya = keys[i];
@@ -154,6 +157,7 @@ function toPoints(kb: kle.Keyboard): points[]{
     var keys = kb.keys.filter(key => {
       return key.col === col
     })
+    keys.sort((a,b) => (a.y > b.y) ? 1 : ((b.y > a.y) ? -1 : 0))
     if (keys.length>1){
       for (let i = 0; i < keys.length-1; i++) {
         let keya = keys[i];
