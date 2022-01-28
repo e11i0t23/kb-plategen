@@ -51,11 +51,12 @@ export const pcbGen = (p: PlateParameters, s: SwitchPlate) => {
     if (ks.switch.mirror) pcbScript.brd.push(`MIRROR KEY${k.id};`)
     let [d_x, d_y] = [(key_x+ks.switch.smdDiodePos.x), (key_y+ks.switch.smdDiodePos.y)]
     pcbScript.brd.push(`MOVE D${k.id} (${d_x} ${d_y});\nROTATE R${ks.switch.smdDiodePos.r ? -k.rotation_angle+ks.switch.smdDiodePos.r : -k.rotation_angle} D${k.id};\nMIRROR D${k.id};\n`);
-    pcbScript.brd.push(`WIRE 'N$${k.id+1}' 0.3 (${d_x+ks.diode.a.y} ${d_y+ks.diode.a.x}) (${key_x+ks.switch.mx2.x} ${key_y+ks.switch.mx2.y});\n`);
+    pcbScript.brd.push(`LAYER 16;\nWIRE 'N$${k.id+1}' 0.3 (${key_x+ks.switch.mx2.x} ${key_y+ks.switch.mx2.y}) (${d_x+ks.diode.a.y} ${d_y+ks.diode.a.x});\n`);
   })
 
   rowKeys.forEach((row) => {
     if ((row.length)>1){
+      row.sort((a,b) => (a.x > b.x) ? 1 : ((b.x > a.x) ? -1 : 0))
       for (let i = 0; i < row.length-1; i++) {
         let keya = row[i];
         let keyb = row[i+1];
@@ -70,6 +71,7 @@ export const pcbGen = (p: PlateParameters, s: SwitchPlate) => {
   })
   colKeys.forEach((col) => {
     if ((col.length)>1){
+      col.sort((a,b) => (a.y > b.y) ? 1 : ((b.y > a.y) ? -1 : 0))
       for (let i = 0; i < col.length-1; i++) {
         let keya = col[i];
         let keyb = col[i+1];
