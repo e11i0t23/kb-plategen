@@ -21,12 +21,44 @@ class SwitchPlate implements makerjs.IModel {
     } else {
       return;
     }
-
+    // acceptable x and y range between 0 and 36 for KLE so we use those as min and max
+    let minX: number = Number.POSITIVE_INFINITY
+    let minY: number = Number.POSITIVE_INFINITY
+    let maxX: number = Number.NEGATIVE_INFINITY
+    let maxY: number = Number.NEGATIVE_INFINITY
+    
     let i = 1;
     for (let key of this.keyboard.keys) {
       models["switch" + i] = new KeyCutouts(key, plateParameters);
-      i++;
+
+      let tMinX = (key.x)*plateParameters.horizontalKeySpacing
+      let tMaxX = (key.x+key.width)*plateParameters.horizontalKeySpacing
+      let tMinY = (key.y)*plateParameters.verticalKeySpacing
+      let tMaxY = (key.y+key.height)*plateParameters.verticalKeySpacing
+      if (tMinX<minX) minX=to3dp(tMinX);
+      if (tMaxX>maxX) maxX=to3dp(tMaxX);
+      if (tMinY<minY) minY=to3dp(tMinY);
+      if (tMaxY>maxY) maxY=to3dp(tMaxY);
+
+      i++;  
     }
+
+
+    // Draw outer boundaries
+    let upperLeft =  [minX, maxY*-1]
+    let upperRight = [maxX, maxY*-1]
+    let lowerLeft =  [minX, minY*-1]
+    let lowerRight = [maxX, minY*-1]
+    var boundingBox = {
+        paths: {
+            lineTop: new makerjs.paths.Line(upperLeft, upperRight),
+            lineBottom: new makerjs.paths.Line(lowerLeft, lowerRight),
+            lineLeft: new makerjs.paths.Line(upperLeft, lowerLeft),
+            lineRight: new makerjs.paths.Line(upperRight, lowerRight)
+        }
+    }
+
+    models["BoundingBox0"] = boundingBox
   
     if (plateParameters.combineOverlaps) {
       let combinedModel = makerjs.cloneObject(models["switch1"]);
@@ -47,3 +79,7 @@ class SwitchPlate implements makerjs.IModel {
 }
 
 export default SwitchPlate;
+
+let to3dp = (n: number) => {
+  return Math.round(n * 1000)/1000 
+}
