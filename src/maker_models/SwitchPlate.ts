@@ -71,6 +71,7 @@ class SwitchPlate implements makerjs.IModel {
       }
       this.models = {
         plate: combinedModel,
+        outline: boundingBox
       };
     } else {
       this.models = models;
