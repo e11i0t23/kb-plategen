@@ -1,7 +1,7 @@
 import { SwitchCutoutType } from "./maker_models/KeyCutouts";
 import { StabilizerCutoutType } from "./maker_models/StabilizerCutout";
 import { AcousticCutoutType } from "./maker_models/AcousticCutout";
-import PcbParameters from "./pcb-gen/Switches";
+import PcbParameters from "./pcb-gen/pcbSettings";
 
 export type PlateKLE = {
   kleData: string;

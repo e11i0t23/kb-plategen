@@ -10,6 +10,7 @@ import PlateConfiguration, { PlateConfigurationProps } from './components/PlateC
 import PlateParameters from './PlateParameters';
 import AppInfo from './components/AppInfo';
 import useConstant from 'use-constant';
+import { ledtypes } from './pcb-gen/pcbSettings';
 
 let kleData = JSON.stringify(require('./sample/iso60.json'));
 kleData = kleData.substring(1, kleData.length - 1);
@@ -26,7 +27,8 @@ const defaultConfig: PlateConfigurationProps = {
   verticalKeySpacing: 19.05,
   combineOverlaps: false,
   Hotswap: false,
-  RGB: false
+  RGB: false,
+  ledType: ledtypes.sk6812_mini_e
 };
 const initialSwitchPlate = new SwitchPlate(defaultConfig);
 

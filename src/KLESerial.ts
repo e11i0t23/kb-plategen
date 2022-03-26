@@ -148,8 +148,9 @@ export function deserialize(rows: Array<any>): Keyboard {
 
           //handle pcb x/y cordinates for rotation
 
-          [newKey.pcb_x, newKey.pcb_y] = applyToPoint(rotate(((newKey.rotation_angle)*(Math.PI)/180), newKey.rotation_x, newKey.rotation_y), [newKey.x, newKey.y])
-
+          [newKey.pcb_x, newKey.pcb_y] = applyToPoint(rotate(((newKey.rotation_angle)*(Math.PI)/180), newKey.rotation_x, newKey.rotation_y), [newKey.x+newKey.width/2, newKey.y+newKey.height/2])
+          newKey.pcb_x-= newKey.width/2
+          newKey.pcb_y-= newKey.height/2
           // Add the key!
           kbd.keys.push(newKey);
 

@@ -1,10 +1,17 @@
 import { SwitchCutoutType } from "../maker_models/KeyCutouts";
 import PlateParameters from "../PlateParameters";
 import * as kle from "../KLESerial"
+import { type } from "os";
 
 type PcbParameters = {
   Hotswap: boolean;
   RGB: boolean;
+  ledType: ledtypes;
+}
+
+export enum ledtypes {
+  sk6812_mini_e,
+  dumb
 }
 
 type cordinate = {
@@ -13,6 +20,13 @@ type cordinate = {
   r?: number;
 }
 
+type led = {
+  footprint: string
+  1: cordinate
+  2: cordinate
+  3: cordinate
+  4: cordinate
+}
 
 type diode = {
   footprint: string
@@ -55,14 +69,23 @@ var DIODE_SOD123: diode = {
   c: { x:  1.635 , y: 0}
 }
 
+var sk6812_mini_e: led = {
+  footprint:"WS2812B-SK6812-MINI-E@Other-Parts",
+  1: {x:-2.65, y: 0.75},
+  2: {x:-2.65, y:-0.75},
+  3: {x: 2.65, y:-0.75},
+  4: {x: 2.65, y: 0.75}
+}
 
-// class SwitchFootprint {
-//   public footprint: pcbKey
-
-//   constructor(plateParameters: PlateParameters){
-
-//   }
-// }
+export const getLed = (p: PlateParameters) => {
+  var led: led;
+  switch (p.ledType) {
+    default:
+      led = sk6812_mini_e
+      break;
+  }
+  return led
+}
 
 export const getSwitch = (p: PlateParameters) => {
   var key: pcbKey = {

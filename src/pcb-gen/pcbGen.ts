@@ -2,7 +2,8 @@ import FileSaver from "file-saver";
 import { Key } from "../KLESerial";
 import SwitchPlate from "../maker_models/SwitchPlate";
 import PlateParameters from "../PlateParameters";
-import { getKeysize, getSwitch } from "./Switches";
+import { getKeysize, getLed, getSwitch } from "./pcbSettings";
+import {rotate, applyToPoint} from 'transformation-matrix';
 
 type pcbScript = {
   schem: string[]
@@ -38,6 +39,7 @@ export const pcbGen = (p: PlateParameters, s: SwitchPlate) => {
   var colKeys = cols.map(col => keys.filter(key => {return key.col === col}))
 
   var ks = getSwitch(p)
+ 
   keys.forEach((k) => {
     
     //schematic control
@@ -52,6 +54,13 @@ export const pcbGen = (p: PlateParameters, s: SwitchPlate) => {
     let [d_x, d_y] = [(key_x+ks.switch.smdDiodePos.x), (key_y+ks.switch.smdDiodePos.y)]
     pcbScript.brd.push(`MOVE D${k.id} (${d_x} ${d_y});\nROTATE R${ks.switch.smdDiodePos.r ? -k.rotation_angle+ks.switch.smdDiodePos.r : -k.rotation_angle} D${k.id};\nMIRROR D${k.id};\n`);
     pcbScript.brd.push(`LAYER 16;\nWIRE 'N$${k.id+1}' 0.3 (${key_x+ks.switch.mx2.x} ${key_y+ks.switch.mx2.y}) (${d_x+ks.diode.a.y} ${d_y+ks.diode.a.x});\n`);
+
+    if (p.RGB){
+      var led = getLed(p)
+      pcbScript.schem.push(`EDIT Schematic.s2;\nADD ${led.footprint} LED${k.id} (${k.col} ${-k.row*1.5});\nEDIT Schematic.s1;\n`);
+      let [led_x, led_y] = applyToPoint(rotate(((k.rotation_angle)*(Math.PI)/180), key_x, key_y), [key_x, key_y-5.25])
+      pcbScript.brd.push(`MOVE LED${k.id} (${led_x} ${led_y});\nROTATE R${k.rotation_angle} LED${k.id};`)
+    }
   })
 
   rowKeys.forEach((row) => {

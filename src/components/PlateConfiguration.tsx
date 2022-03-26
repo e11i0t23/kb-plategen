@@ -22,7 +22,8 @@ const PlateConfiguration = (props: PlateConfigurationInputProps) => {
     switchCutoutType,
     verticalKeySpacing,
     RGB,
-    Hotswap
+    Hotswap, 
+    ledType
   } = props;
   const handleKLEChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     onConfigChange({ ...props, kleData: event.target.value });
@@ -247,16 +248,29 @@ const PlateConfiguration = (props: PlateConfigurationInputProps) => {
           RGB
         </h3>
         <div className="field">
-          <div className="ui checkbox">
-            <input
-              type="checkbox"
-              name="RGB"
-              checked={RGB}
-              onChange={handleChange}
-            />
-            <label>
-               Enable RGB
-            </label>
+          <div className="three wide field">
+            <div className="ui checkbox">
+              <input
+                type="checkbox"
+                name="RGB"
+                checked={RGB}
+                onChange={handleChange}
+              />
+              <label>
+                Enable RGB
+              </label>
+            </div>
+          </div>
+          <div className="three wide field">
+            <label>Led Type</label>
+            <select name="ledType" value={ledType} onChange={handleChange}>
+              <option className="item" data-value="sk6812_mini_e">
+                SK6812 mini-e
+              </option>
+              <option className="item" data-value="dumb">
+                dumb
+              </option>
+            </select>
           </div>
         </div>
       </div>
